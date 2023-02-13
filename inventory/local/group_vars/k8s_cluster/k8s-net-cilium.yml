@@ -1,5 +1,5 @@
 ---
-# cilium_version: "v1.12.1"
+# cilium_version: "v1.12.7"
 
 # Log-level
 # cilium_debug: false
@@ -39,7 +39,7 @@
 # cilium_cpu_requests: 100m
 
 # Overlay Network Mode
-# cilium_tunnel_mode: vxlan
+cilium_tunnel_mode: disabled
 # Optional features
 # cilium_enable_prometheus: false
 # Enable if you want to make use of hostPort mappings
@@ -52,7 +52,7 @@
 # Only effective when monitor aggregation is set to "medium" or higher.
 # cilium_monitor_aggregation_flags: "all"
 # Kube Proxy Replacement mode (strict/probe/partial)
-# cilium_kube_proxy_replacement: probe
+cilium_kube_proxy_replacement: strict
 
 # If upgrading from Cilium < 1.5, you may want to override some of these options
 # to prevent service disruptions. See also:
@@ -68,7 +68,7 @@
 # Unique ID of the cluster. Must be unique across all conneted clusters and
 # in the range of 1 and 255. Only relevant when building a mesh of clusters.
 # This value is not defined by default
-# cilium_cluster_id:
+cilium_cluster_id: 11
 
 # Deploy cilium even if kube_network_plugin is not cilium.
 # This enables to deploy cilium alongside another CNI to replace kube-proxy.
@@ -80,7 +80,7 @@
 # You wil also have to specify the variable `cilium_native_routing_cidr` to
 # make this work. Please refer to the cilium documentation for more
 # information about this kind of setups.
-# cilium_auto_direct_node_routes: false
+cilium_auto_direct_node_routes: true
 
 # Allows to explicitly specify the IPv4 CIDR for native routing.
 # When specified, Cilium assumes networking for this CIDR is preconfigured and
@@ -92,8 +92,8 @@
 # direct routing and the Kubernetes CIDR is included in the native routing CIDR,
 # the user must configure the routes to reach pods, either manually or by
 # setting the auto-direct-node-routes flag.
-# cilium_native_routing_cidr: ""
-
+cilium_native_routing_cidr: "10.150.0.0/16"
+cilium_direct_routing_device: eth0
 # Allows to explicitly specify the IPv6 CIDR for native routing.
 # cilium_native_routing_cidr_ipv6: ""
 
@@ -113,7 +113,8 @@
 # it will fallback on the wireguard-go user-space implementation of WireGuard.
 # This option is only effective when `cilium_encryption_type` is set to `wireguard`.
 # cilium_wireguard_userspace_fallback: false
-
+cilium_egress_masquerade_interfaces: eth2
+cilium_devices: eth2
 # IP Masquerade Agent
 # https://docs.cilium.io/en/stable/concepts/networking/masquerading/
 # By default, all packets from a pod destined to an IP address outside of the cilium_native_routing_cidr range are masqueraded
@@ -188,7 +189,7 @@
 # cilium_operator_custom_args: []
 
 # Name of the cluster. Only relevant when building a mesh of clusters.
-# cilium_cluster_name: default
+# cilium_cluster_name: cluster1
 
 # Make Cilium take ownership over the `/etc/cni/net.d` directory on the node, renaming all non-Cilium CNI configurations to `*.cilium_bak`.
 # This ensures no Pods can be scheduled using other CNI plugins during Cilium agent downtime.
@@ -218,28 +219,28 @@
 
 # -- Enables masquerading of IPv4 traffic leaving the node from endpoints.
 # Available for Cilium v1.10 and up
-# cilium_enable_ipv4_masquerade: true
+cilium_enable_ipv4_masquerade: true
 # -- Enables masquerading of IPv6 traffic leaving the node from endpoints.
 # Available for Cilium v1.10 and up
 # cilium_enable_ipv6_masquerade: true
 
 # -- Enable native IP masquerade support in eBPF
-# cilium_enable_bpf_masquerade: false
+cilium_enable_bpf_masquerade: true
 
 # -- Configure whether direct routing mode should route traffic via
 # host stack (true) or directly and more efficiently out of BPF (false) if
 # the kernel supports it. The latter has the implication that it will also
 # bypass netfilter in the host namespace.
-# cilium_enable_host_legacy_routing: true
+cilium_enable_host_legacy_routing: false
 
 # -- Enable use of the remote node identity.
 # ref: https://docs.cilium.io/en/v1.7/install/upgrade/#configmap-remote-node-identity
-# cilium_enable_remote_node_identity: true
+cilium_enable_remote_node_identity: true
 
 # -- Enable the use of well-known identities.
-# cilium_enable_well_known_identities: false
+cilium_enable_well_known_identities: true
 
-# cilium_enable_bpf_clock_probe: true
+cilium_enable_bpf_clock_probe: true
 
 # -- Whether to enable CNP status updates.
 # cilium_disable_cnp_status_updates: true
